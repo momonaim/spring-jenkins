@@ -6,10 +6,6 @@ pipeline {
         DOCKER_TAG = "latest"
     }
 
-    tools {
-        maven 'Maven'
-        jdk 'JDK17'
-    }
 
     stages {
 
