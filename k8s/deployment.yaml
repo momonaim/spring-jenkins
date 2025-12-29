@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-jenkins
+  template:
+    metadata:
+      labels:
+        app: hello-jenkins
+    spec:
+      containers:
+        - name: hello-jenkins
+          image: docker.io/ita03mouadili/hello-jenkins:latest
+          ports:
+            - containerPort: 8080
