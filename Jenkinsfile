@@ -52,7 +52,7 @@ pipeline {
 
         stage('Deploy Kubernetes') {
             steps {
-                withEnv(["KUBECONFIG=/root/.kube/config"]) {
+                withEnv(["KUBECONFIG=/var/jenkins_home/.kube/config"]) {
                     sh 'kubectl config current-context'
                     sh 'kubectl get nodes'
                     sh 'kubectl apply -f k8s/'
