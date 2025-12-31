@@ -52,10 +52,16 @@ pipeline {
 
         stage('Deploy Kubernetes') {
             steps {
-                withEnv(["KUBECONFIG=/var/jenkins_home/.kube/config"]) {
-                    sh 'kubectl config current-context'
-                    sh 'kubectl get nodes'
-                    sh 'kubectl apply -f k8s/'
+                withEnv([
+                    "KUBECONFIG=/var/jenkins_home/.kube/config",
+                    "MINIKUBE_HOME=/var/jenkins_home/.minikube",
+                    "CLIENT_CERT=/var/jenkins_home/.minikube/profiles/minikube/client.crt",
+                    "CLIENT_KEY=/var/jenkins_home/.minikube/profiles/minikube/client.key",
+                    "CA_CERT=/var/jenkins_home/.minikube/ca.crt"
+                ]) {
+                    sh 'kubectl --client-certificate=$CLIENT_CERT --client-key=$CLIENT_KEY --certificate-authority=$CA_CERT config current-context'
+                    sh 'kubectl --client-certificate=$CLIENT_CERT --client-key=$CLIENT_KEY --certificate-authority=$CA_CERT get nodes'
+                    sh 'kubectl --client-certificate=$CLIENT_CERT --client-key=$CLIENT_KEY --certificate-authority=$CA_CERT apply -f k8s/'
                 }
             }
         }
