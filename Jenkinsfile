@@ -52,8 +52,14 @@ pipeline {
 
         stage('Deploy Kubernetes') {
             steps {
-                withCredentials([kubeconfigFile(credentialsId: 'config')]) {
-                    sh 'kubectl apply -f k8s/'
+                script {
+                    // Use withKubeConfig to set up the environment
+                    withKubeConfig([credentialsId: 'kubeconfig-file']) {
+                        // All steps within this block will use the specified kubeconfig
+                        sh 'kubectl config current-context'
+                        sh 'kubectl get nodes'
+                        sh 'kubectl apply -f k8s/'
+                    }
                 }
             }
         }
